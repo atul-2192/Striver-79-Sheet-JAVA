@@ -1,0 +1,86 @@
+class TrieNode{
+    public TrieNode children[];
+    public TrieNode()
+    {
+        children= new TrieNode[2];
+    }
+};
+
+class Trie{
+    public TrieNode root;
+
+    public Trie()
+    {
+        root=new TrieNode();
+    }
+    public void insert(int nums)
+    {
+        TrieNode curr=root;
+        for(int i=31;i>=0;i--)
+        {
+            int bit= (nums>>i)&1;
+            if(curr.children[bit]==null)
+            {
+                curr.children[bit]= new TrieNode();
+
+            }
+            curr=curr.children[bit];
+        }
+        
+    }
+    public int getMax(int nums)
+    {
+     TrieNode curr= root;
+     int val=0;
+     for(int i=31;i>=0;i--)
+     {
+                int bit= (nums>>i)&1;
+                if(curr.children[bit^1]!=null)
+                {
+                    val=val|(1<<i);
+                    curr=curr.children[bit^1];
+                }
+                else
+                {
+                    curr=curr.children[bit];
+                }
+     }
+
+     return val;
+    }
+};
+
+
+class Solution {
+    public int[] maximizeXor(int[] nums, int[][] queries) {
+        Trie trie= new Trie();
+        Arrays.sort(nums);
+        int q[][]= new int[queries.length][3];
+        for(int i=0;i<queries.length;i++)
+        {
+            q[i][0]=queries[i][1];
+            q[i][1]=queries[i][0];
+            q[i][2]=i;
+        }
+        Arrays.sort(q,(o1,o2)->o1[0]-o2[0]);
+        int index=0;
+        int ans[]=new int[q.length];
+        for(int i=0;i<q.length;i++)
+        {
+            while(index<nums.length&&nums[index]<=q[i][0])
+            {
+                trie.insert(nums[index]);
+                index++;
+            }
+                if(index==0)
+                {
+                    ans[q[i][2]]=-1;
+                }
+                else
+                {
+                    ans[q[i][2]]=trie.getMax(q[i][1]);
+                }
+        }
+        return ans;
+    }
+}
