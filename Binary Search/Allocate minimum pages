@@ -1,0 +1,49 @@
+ public static boolean f(int v[],int mid,int k,int N)
+{ int sum=0;
+
+ int count=1;
+ for(int i=0;i<N;i++)
+ {
+ if(v[i]>mid) return false;
+  sum+=v[i]; 
+if(sum>mid)
+{
+	count++;
+	sum=v[i] ;
+}
+ if(count>k) return false;
+ 
+ }
+  return true;
+ 
+}
+  
+    public static int findPages(int[]A,int N,int M)
+    {
+          if(M>N) return -1;
+           	int sum=0;
+	for(int i=0;i<N;i++)
+	{ 
+	 sum+=A[i];
+	}
+	
+	
+    int low=0;
+	int high=sum;
+
+	while(low<=high)
+	{ int mid=low+(high-low)/2;
+	  boolean val1=f(A,mid,M,N);
+
+	 if(val1==true)
+	 { if(!f(A,mid-1,M,N))
+	 {
+		 return mid;
+		
+	 }
+	  else high=mid-1;
+	 }
+	 else low=mid+1;
+	}
+	return -1;
+    }
