@@ -1,0 +1,16 @@
+ int f(TreeNode root,int  ans[])
+    {
+        if(root==null) return 0;
+        int left= Math.max(0,f(root.left,ans));
+        int right=Math.max(0,f(root.right,ans));
+
+        ans[0]=Math.max(ans[0],left+right+ root.val);
+        return Math.max(left,right)+root.val;
+    }
+    public int maxPathSum(TreeNode root) {
+        int ans[]=new int[1];
+        ans[0]=Integer.MIN_VALUE;
+        f(root,ans);
+        if(ans[0]<root.val) return root.val;
+        return ans[0];
+    }
