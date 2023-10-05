@@ -1,0 +1,28 @@
+  public ArrayList <Integer> bottomView(Node root)
+    {
+        TreeMap<Integer,Integer> mp= new TreeMap<>();
+        Queue<Node> q= new LinkedList<>();
+        root.hd=0;
+        q.add(root);
+        while(!q.isEmpty())
+        {
+            Node curr=q.remove();
+            int hd=curr.hd;
+            mp.put(hd,curr.data);
+            if(curr.left!=null)
+            {
+                curr.left.hd=hd-1;
+                q.add(curr.left);
+            }
+            if(curr.right!=null)
+            {
+                curr.right.hd=hd+1;
+                q.add(curr.right);
+            }
+        }
+        ArrayList<Integer> ans= new ArrayList<>();
+        mp.forEach((key,value)->{
+            ans.add(value);
+        });
+        return ans;
+    }
